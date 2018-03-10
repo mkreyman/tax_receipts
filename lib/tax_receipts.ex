@@ -1,0 +1,3 @@
+defmodule TaxReceipts do
+
+end
