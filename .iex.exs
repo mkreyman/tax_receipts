@@ -1,1 +1,1 @@
-alias TaxReceipts.{Action,Repo}
+alias TaxReceipts.{Action, Repo, Donor}

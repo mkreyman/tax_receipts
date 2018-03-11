@@ -3,13 +3,13 @@ defmodule TaxReceipts.Action do
   import Ecto.Changeset
   import Ecto.Query, only: [from: 2]
 
-  alias TaxReceipts.{Action,Repo}
+  alias TaxReceipts.{Action, Repo}
 
   schema "actions" do
-    field :name, :string
-    field :entity_type, :string
-    field :entity_id, :string
-    field :data, :map
+    field(:name, :string)
+    field(:entity_type, :string)
+    field(:entity_id, :string)
+    field(:data, :map)
 
     timestamps()
   end
@@ -23,13 +23,16 @@ defmodule TaxReceipts.Action do
   def add(name, type, id) do
     %Action{}
     |> Action.changeset(%{name: name, entity_type: type, entity_id: id})
-    |> Repo.insert!
+    |> Repo.insert!()
   end
 
   def summary(type, id) do
-    query = from t in Action,
-      where: t.entity_type == ^type and t.entity_id == ^id,
-      select: t.name
+    query =
+      from(
+        t in Action,
+        where: t.entity_type == ^type and t.entity_id == ^id,
+        select: t.name
+      )
 
     Repo.all(query)
   end

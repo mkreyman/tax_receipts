@@ -1,7 +1,7 @@
 defmodule TaxReceipts.Mixfile do
   use Mix.Project
 
-  @name    :tax_receipts
+  @name :tax_receipts
   @version "0.1.0"
 
   @deps [
@@ -10,36 +10,37 @@ defmodule TaxReceipts.Mixfile do
     {:ecto, "~> 2.1"},
     {:poison, "~> 3.1.0"},
     {:ex_doc, ">= 0.0.0", only: :dev},
-    { :pdf_generator, ">=0.3.5" }
+    {:csv, "~> 2.0.0"},
+    {:pdf_generator, ">=0.3.5"}
   ]
 
   @aliases [
     "ecto.reset": ["ecto.drop --quiet", "ecto.create --quiet", "ecto.migrate"],
-    "test.once": ["ecto.reset", "test"],
+    "test.once": ["ecto.reset", "test"]
   ]
 
   # ------------------------------------------------------------
 
   def project do
-    in_production = Mix.env == :prod
+    in_production = Mix.env() == :prod
+
     [
-      app:     @name,
+      app: @name,
       version: @version,
-      elixir:  ">= 1.7.0-dev",
-      deps:    @deps,
+      elixir: ">= 1.7.0-dev",
+      deps: @deps,
       aliases: @aliases,
-      build_embedded:  in_production,
+      build_embedded: in_production
     ]
   end
 
   def application do
     [
-      mod: { TaxReceipts.Application, [] },
+      mod: {TaxReceipts.Application, []},
       extra_applications: [
         :logger,
         :pdf_generator
-      ],
+      ]
     ]
   end
-
 end
