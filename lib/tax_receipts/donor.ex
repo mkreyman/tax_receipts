@@ -42,6 +42,17 @@ defmodule TaxReceipts.Donor do
     end
   end
 
+  def with_contributions do
+    query =
+      from(
+        d in Donor,
+        where: (d.amount > 0),
+        select: [:name, :amount, :address]
+      )
+
+    Repo.all(query)
+  end
+
   def summary(name) do
     query =
       from(

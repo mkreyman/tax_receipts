@@ -13,30 +13,49 @@ Generate tax receipts for our donors based on QuickBooks reports in CSV format, 
 ]
 ```
 
-## License
+## How to use
 
-> TODO: Add license
+Place your template in `templates` directory.
+Adjust configuration in `config.exs`.
+
+```elixir
+csv = "../tmp/Sales by Customer Summary 2017.CSV"  # path relative to lib.
+headers = [:name, :amount]  # there must be no headers row in csv.
+TaxReceipts.parse(csv, headers)
+
+csv = "../tmp/Customer Contact List from QuickBooks.CSV"
+headers = [:name, :address]
+TaxReceipts.parse(csv, headers)
+
+TaxReceipts.print()
+```
+
+Generated pdf files should appear in `output` directory.
 
 ## Notes
 
 We use two reports from QuickBooks:
  - Sales by Customer Summary (:name, :amount)
- - Customer Contact List (_blank, :name, :full_address)
+ - Customer Contact List (:name, :address)
 
+PDF generator library:
 https://github.com/gutschilla/elixir-pdf-generator
 
+Install dependancies:
 brew install Caskroom/cask/wkhtmltopdf
 downloaded goon from https://github.com/alco/goon/releases/ and placed it into ~/bin
 mix deps.get
 
-Using EEx templates:
+An example of using EEx templates:
 https://codewords.recurse.com/issues/five/building-a-web-framework-from-scratch-in-elixir
 
+```elixir
 html = "<html><body><p>Hi there!</p></body></html>"
 pdf_options = Application.fetch_env!(:pdf_generator, :pdf_options)
 { :ok, filename }    = PdfGenerator.generate html, shell_params: pdf_options
+```
 
-# Inline images in html
+Using inline images in html:
 https://elixirforum.com/t/pdf-generation-with-pdfgenerator/9963
 
 

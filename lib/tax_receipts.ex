@@ -1,20 +1,19 @@
 defmodule TaxReceipts do
   require Logger
 
-  alias TaxReceipts.{Donor, Repo}
+  alias TaxReceipts.Donor
 
-  @temp_dir Application.get_env(:tax_receipts, :temp_dir)
+  @output_dir Application.get_env(:tax_receipts, :output_dir)
+  @templates_dir Application.get_env(:tax_receipts, :templates_dir)
+  @template Application.get_env(:tax_receipts, :template)
+  @logo Application.get_env(:tax_receipts, :logo)
+  @tmp_dir Application.get_env(:tax_receipts, :tmp_dir)
+  @pdf_options Application.fetch_env!(:pdf_generator, :pdf_options)
 
   # The Sales by Customer Summary report: "../tmp/Sales by Customer Summary 2017.CSV"
   # The Customer Contact List report: "../tmp/Customer Contact List from QuickBooks.CSV"
-  def parse(type, filename) do
-    headers =
-      case type do
-        :names -> [:name, :amount]
-        :addresses -> [:name, :address]
-      end
-
-    filename
+  def parse(csv, headers) do
+    csv
     |> Path.expand(__DIR__)
     |> File.stream!()
     |> CSV.decode(headers: headers, strip_fields: true)
@@ -27,22 +26,20 @@ defmodule TaxReceipts do
   end
 
   def print do
-    Donor
-    |> Repo.all()
+    copy_logo_to_tmp_dir()
+    Donor.with_contributions()
     |> Enum.map(&to_pdf(&1))
   end
 
   defp to_pdf(donor) do
-    copy_image_to_system_tmp_dir()
-    html = to_template(donor)
+    html = eval_template(donor)
     filename = donor.name
-    renamed = Path.join(@temp_dir, "/#{filename}.pdf")
-    pdf_options = Application.fetch_env!(:pdf_generator, :pdf_options)
+    renamed = Path.join(@output_dir, "/#{filename}.pdf")
 
     with {:ok, file} <-
            PdfGenerator.generate(
              html,
-             shell_params: pdf_options,
+             shell_params: @pdf_options,
              delete_temporary: true,
              filename: filename
            ) do
@@ -56,11 +53,11 @@ defmodule TaxReceipts do
     end
   end
 
-  defp to_template(donor) do
-    EEx.eval_file("templates/tax_receipt.eex", donor: donor)
+  defp eval_template(donor) do
+    EEx.eval_file("#{@templates_dir}/#{@template}", donor: donor)
   end
 
-  defp copy_image_to_system_tmp_dir do
-    File.cp("templates/tax_receipt.png", "#{System.tmp_dir()}/tax_receipt.png")
+  defp copy_logo_to_tmp_dir do
+    File.cp("#{@templates_dir}/#{@logo}", "#{@tmp_dir}/#{@logo}")
   end
 end
