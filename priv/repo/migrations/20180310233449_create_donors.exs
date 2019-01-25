@@ -6,6 +6,8 @@ defmodule TaxReceipts.Repo.Migrations.CreateDonors do
       add :name, :string
       add :amount, :integer
       add :address, :string
+      add :email, :string
+      add :receipt_emailed, :boolean
 
       timestamps()
     end

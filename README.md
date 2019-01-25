@@ -9,7 +9,7 @@ Generate tax receipts for our donors based on QuickBooks reports in CSV format, 
 
 ```elixir
 @deps [
-  tax_receipts: "~> 0.1.0"
+  tax_receipts: "~> 0.2.0"
 ]
 ```
 
@@ -19,12 +19,8 @@ Place your template in `templates` directory.
 Adjust configuration in `config.exs`.
 
 ```elixir
-csv = "../tmp/Sales by Customer Summary 2017.CSV"  # path relative to lib.
-headers = [:name, :amount]  # there must be no headers row in csv.
-TaxReceipts.parse(csv, headers)
-
-csv = "../tmp/Customer Contact List from QuickBooks.CSV"
-headers = [:name, :address]
+csv = "../tmp/Sales by Customer Summary with address and email.CSV"  # path relative to lib.
+headers = [:name, :amount, :address, :email]  # should be no headers row in csv.
 TaxReceipts.parse(csv, headers)
 
 TaxReceipts.print()

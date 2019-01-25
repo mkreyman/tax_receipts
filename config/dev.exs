@@ -6,4 +6,3 @@ config :tax_receipts, TaxReceipts.Repo,
   username: System.get_env("DB_USER"),
   password: System.get_env("DB_PASSWORD"),
   hostname: "localhost"
-

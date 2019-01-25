@@ -27,6 +27,7 @@ defmodule TaxReceipts do
 
   def print do
     copy_logo_to_tmp_dir()
+
     Donor.with_contributions()
     |> Enum.map(&to_pdf(&1))
   end

@@ -9,11 +9,13 @@ defmodule TaxReceipts.Donor do
     field(:name, :string)
     field(:amount, :integer)
     field(:address, :string)
+    field(:email, :string)
+    field(:receipt_emailed, :boolean)
 
     timestamps()
   end
 
-  @fields ~w(name amount address)a
+  @fields ~w(name amount address email receipt_emailed)a
 
   def changeset(record, params \\ :empty) do
     record
@@ -23,9 +25,15 @@ defmodule TaxReceipts.Donor do
     |> validate_number(:amount, greater_than: 0)
   end
 
-  def add(name, amount, address) do
+  def add(name, amount, address, email, receipt_emailed) do
     %Donor{}
-    |> Donor.changeset(%{name: name, amount: amount, address: address})
+    |> Donor.changeset(%{
+      name: name,
+      amount: amount,
+      address: address,
+      email: email,
+      receipt_emailed: receipt_emailed
+    })
     |> Repo.insert!()
   end
 
@@ -46,8 +54,8 @@ defmodule TaxReceipts.Donor do
     query =
       from(
         d in Donor,
-        where: (d.amount > 0),
-        select: [:name, :amount, :address]
+        where: d.amount > 0,
+        select: [:name, :amount, :address, :email, :receipt_emailed]
       )
 
     Repo.all(query)
@@ -58,7 +66,7 @@ defmodule TaxReceipts.Donor do
       from(
         d in Donor,
         where: ilike(d.name, ^"%#{name}%"),
-        select: [:name, :amount, :address]
+        select: [:name, :amount, :address, :email, :receipt_emailed]
       )
 
     Repo.all(query)
