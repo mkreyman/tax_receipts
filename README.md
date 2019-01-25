@@ -38,9 +38,13 @@ PDF generator library:
 https://github.com/gutschilla/elixir-pdf-generator
 
 Install dependancies:
+```
 brew install Caskroom/cask/wkhtmltopdf
-downloaded goon from https://github.com/alco/goon/releases/ and placed it into ~/bin
+```
+Download `goon` from https://github.com/alco/goon/releases/ and place it into `~/bin`
+```elixir
 mix deps.get
+```
 
 An example of using EEx templates:
 https://codewords.recurse.com/issues/five/building-a-web-framework-from-scratch-in-elixir
