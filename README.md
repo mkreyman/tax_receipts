@@ -4,7 +4,6 @@
 
 Generate tax receipts for our donors based on QuickBooks reports in CSV format, and print them out as PDF files.
 
-
 ## Installation
 
 ```elixir
@@ -19,7 +18,7 @@ Place your template in `templates` directory.
 Adjust configuration in `config.exs`.
 
 ```elixir
-csv = "../tmp/Sales by Customer Summary with address and email.CSV"  # path relative to lib.
+csv = "../tmp/Donations by Member Summary 2021.csv"  # path relative to lib.
 headers = [:name, :amount, :address, :email]  # should be no headers row in csv.
 TaxReceipts.parse(csv, headers)
 
@@ -31,17 +30,21 @@ Generated pdf files should appear in `output` directory.
 ## Notes
 
 We use two reports from QuickBooks:
- - Sales by Customer Summary (:name, :amount)
- - Customer Contact List (:name, :address)
+
+- Sales by Customer Summary (:name, :amount)
+- Customer Contact List (:name, :address)
 
 PDF generator library:
 https://github.com/gutschilla/elixir-pdf-generator
 
 Install dependancies:
+
 ```
 brew install Caskroom/cask/wkhtmltopdf
 ```
+
 Download `goon` from https://github.com/alco/goon/releases/ and place it into `~/bin`
+
 ```elixir
 mix deps.get
 ```
@@ -58,6 +61,6 @@ pdf_options = Application.fetch_env!(:pdf_generator, :pdf_options)
 Using inline images in html:
 https://elixirforum.com/t/pdf-generation-with-pdfgenerator/9963
 
+---
 
-----
-Created:  2018-03-10Z
+Created: 2018-03-10Z

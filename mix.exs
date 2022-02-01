@@ -2,7 +2,7 @@ defmodule TaxReceipts.Mixfile do
   use Mix.Project
 
   @name :tax_receipts
-  @version "0.2.0"
+  @version "0.3.0"
 
   @deps [
     {:mix_test_watch, github: "aforward/mix-test.watch", only: :dev, runtime: false},
@@ -11,7 +11,7 @@ defmodule TaxReceipts.Mixfile do
     {:poison, "~> 3.1.0"},
     {:ex_doc, ">= 0.0.0", only: :dev},
     {:csv, "~> 2.0.0"},
-    {:pdf_generator, ">=0.3.5"}
+    {:pdf_generator, "~> 0.6.2"}
   ]
 
   @aliases [
@@ -27,7 +27,7 @@ defmodule TaxReceipts.Mixfile do
     [
       app: @name,
       version: @version,
-      elixir: ">= 1.7.0",
+      elixir: ">= 1.11.2",
       deps: @deps,
       aliases: @aliases,
       build_embedded: in_production

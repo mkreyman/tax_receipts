@@ -8,10 +8,7 @@ defmodule TaxReceipts do
   @template Application.get_env(:tax_receipts, :template)
   @logo Application.get_env(:tax_receipts, :logo)
   @tmp_dir Application.get_env(:tax_receipts, :tmp_dir)
-  @pdf_options Application.fetch_env!(:pdf_generator, :pdf_options)
 
-  # The Sales by Customer Summary report: "../tmp/Sales by Customer Summary 2017.CSV"
-  # The Customer Contact List report: "../tmp/Customer Contact List from QuickBooks.CSV"
   def parse(csv, headers) do
     csv
     |> Path.expand(__DIR__)
@@ -40,9 +37,9 @@ defmodule TaxReceipts do
     with {:ok, file} <-
            PdfGenerator.generate(
              html,
-             shell_params: @pdf_options,
              delete_temporary: true,
-             filename: filename
+             filename: filename,
+             page_size: "letter"
            ) do
       File.rename(file, renamed)
       {:ok, renamed}

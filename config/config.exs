@@ -9,26 +9,6 @@ if Mix.env() == :dev do
     clear: true
 end
 
-# configuration for the PdfGenerator
-config :pdf_generator,
-  pdf_options: [
-    "--print-media-type",
-    "--page-size",
-    "Letter",
-    "--dpi",
-    "150",
-    "--zoom",
-    "3",
-    "--margin-top",
-    "8",
-    "--margin-right",
-    "8",
-    "--margin-bottom",
-    "8",
-    "--margin-left",
-    "8"
-  ]
-
 config :tax_receipts,
   output_dir: "output",
   templates_dir: "templates",
